@@ -1,4 +1,44 @@
 #include<stdio.h>
+#include"linked_list.h"
+
+
+void swap(t_linked_list *lst)
+{
+	int current;
+
+	current = lst->content;
+
+	lst->content = lst->next->content;
+	lst->next->content = current;
+}
+
+void len_linked_list(t_linked_list *lst)
+{
+	t_linked_list *first;
+	first = lst;
+
+	int index;
+	int current;
+
+	index = 1;
+	
+	lst = lst->next;
+	while(lst != first)
+	{
+		index++;
+		lst = lst->next;
+	}
+}
+
+void rotate(t_linked_list **lst)
+{
+	*lst = (*lst)->next;
+}
+
+void reverse_rotate(t_linked_list **lst)
+{
+	*lst = (*lst)->previous;
+}
 
 void parser(int *converted_number, const char *list_number)
 {
