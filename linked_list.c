@@ -73,5 +73,6 @@ t_linked_list	*new_linked_list(int *values, int elements)
 		current = node;
 		index++;
 	}
+	append_linked_list(current, linked_list);
 	return (linked_list);
 }
