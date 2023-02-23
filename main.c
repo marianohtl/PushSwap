@@ -82,17 +82,20 @@ void reverse_rotate(t_linked_list **lst)
 	*lst = (*lst)->previous;
 }
 
-void parser(int *converted_number, const char *list_number)
+t_linked_list *parser(const char *list_number)
 {
+	t_linked_list	*list;
+	t_linked_list	*current;
 	const char *copy;
 	int digit;
 	int mult;
-	int i;
 	
-	i = 0;
+	list = new_node_linked_list(0);
+	if (list == NULL)
+		return (NULL);
+	current = list;
 	while (*list_number)
 	{
-		converted_number[i] = 0;
 		mult = 1;
 		copy = list_number;
 		digit = 0;
@@ -101,16 +104,28 @@ void parser(int *converted_number, const char *list_number)
 			digit++;
 			list_number++;
 		}
-
 		while (digit > 0)
 		{
 			digit--;
-			converted_number[i] += (copy[digit] - '0') * mult;
+			current->content += (copy[digit] - '0') * mult;
 			mult = mult * 10;
 		}
-		list_number++;
-		i++;
+		if (*list_number != '\0')
+			list_number++;
+		current->next = new_node_linked_list(0);
+		if (current->next == NULL)
+		{
+			delete_linked_list(&list);
+			return (NULL);
+		}
+		current->next->previous = current;
+		current = current->next;
 	}
+	current = current->previous;
+	delete_node_linked_list(current->next);
+	current->next = list;
+	list->previous = current;
+	return (list);
 }
 
 void	print_list(t_linked_list *list)
@@ -135,16 +150,12 @@ void	print_list(t_linked_list *list)
 
 int main(void )
 {
-
-	int converted_number[9999];
-	const char *test = "100 3 0 44 5 8";
 	t_linked_list	*list_a;
+	const char *test = "100 3 0 44 5 8";
 	t_linked_list	*list_b;
 	int	index;
 
-	parser(converted_number, test);
-	printf("%d %d %d %d %d %d\n",converted_number[0], converted_number[1],converted_number[2],converted_number[3], converted_number[4], converted_number[5]);
-	list_a = new_linked_list(converted_number, 6);
+	list_a = parser(test);
 	printf("Original\n");
 	print_list(list_a);
 	printf("\nSwap\n");
