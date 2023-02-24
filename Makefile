@@ -7,6 +7,7 @@ CFLAGS := -Wall -Wextra -Werror -g3 -MMD
 
 SOURCES := \
 	linked_list.c \
+	operators.c \
 	main.c
 OBJECTS_FOLDER := objs
 OBJECTS := $(SOURCES:%.c=objs/%.o)
