@@ -1,5 +1,5 @@
 #include "linked_list.h"
-#include "operators.h"
+#include "stacks.h"
 #include <stdio.h>
 
 
@@ -73,65 +73,66 @@ void	print_list(t_linked_list *list)
 
 	if (list == NULL)
 	{
-		printf("%p\n", list);
+		dprintf(1, "%p\n", list);
 		return ;
 	}
 	current = list;
-	printf("%d ", current->content);
+	dprintf(1, "%d ", current->content);
 	current = current->next;
 	while (current != list && current != NULL)
 	{
-		printf("%d ", current->content);
+		dprintf(1, "%d ", current->content);
 		current = current->next;
 	}
-	printf("\n");
+	dprintf(1, "\n");
+}
+
+void	print_stacks(t_stacks *stacks)
+{
+	dprintf(1, "\e[33mA: ");
+	print_list(stacks->stack_a);
+	dprintf(1, "\e[32mB: ");
+	print_list(stacks->stack_b);
+	dprintf(1, "\e[0m");
 }
 
 int main(void )
 {
-	t_linked_list	*list_a;
+	t_stacks	stacks;
 	const char *test = "100 3 0 44 5 8";
-	t_linked_list	*list_b;
 	int	index;
 
-	list_a = parser(test);
-	printf("Original\n");
-	print_list(list_a);
-	printf("\nSwap\n");
-	swap(list_a);
-	print_list(list_a);
-	swap(list_a);
-	print_list(list_a);
-	printf("\nRotate\n");
-	rotate(&list_a);
-	print_list(list_a);
-	printf("\nReverse Rotate\n");
-	reverse_rotate(&list_a);
-	print_list(list_a);
+	stacks.stack_a = parser(test);
+	stacks.stack_b = NULL;
+	dprintf(1, "Original\n");
+	print_stacks(&stacks);
+	dprintf(1, "\nSwap\n");
+	swap_a(&stacks);
+	print_stacks(&stacks);
+	swap_a(&stacks);
+	print_stacks(&stacks);
+	dprintf(1, "\nRotate\n");
+	rotate_a(&stacks);
+	print_stacks(&stacks);
+	dprintf(1, "\nReverse Rotate\n");
+	reverse_rotate_a(&stacks);
+	print_stacks(&stacks);
 
-	printf("\nPush\n");
-	list_b = NULL;
+	dprintf(1, "\nPush\n");
 	index = 0;
 	while (index < 6)
 	{
 		index++;
-		push(&list_a, &list_b);
-		printf("\e[33mA: ");
-		print_list(list_a);
-		printf("\e[32mB: ");
-		print_list(list_b);
-		
+		push_a(&stacks);
+		print_stacks(&stacks);
 	}
-	printf("\e[0m\n");
+	dprintf(1, "\n");
 	while (index > 0)
 	{
 		index--;
-		push(&list_b, &list_a);
-		printf("\e[33mA: ");
-		print_list(list_a);
-		printf("\e[32mB: ");
-		print_list(list_b);
+		push_b(&stacks);
+		print_stacks(&stacks);
 	}
-	printf("\e[0m\n");
+	dprintf(1, "\n");
 	return 0;
 }
