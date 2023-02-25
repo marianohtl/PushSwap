@@ -4,7 +4,7 @@
 #include <stdio.h>
 
 
-void len_linked_list(t_linked_list *lst)
+int len_linked_list(t_linked_list *lst)
 {
 	t_linked_list *first;
 	first = lst;
@@ -20,13 +20,15 @@ void len_linked_list(t_linked_list *lst)
 		index++;
 		lst = lst->next;
 	}
+	return (index);
 }
 
-t_linked_list *parser(const char *list_number)
+t_linked_list *parser(int argc, char **argv)
 {
 	t_linked_list	*list;
 	t_linked_list	*current;
 	const char *copy;
+	const char *list_number;
 	int digit;
 	int mult;
 	
@@ -34,32 +36,41 @@ t_linked_list *parser(const char *list_number)
 	if (list == NULL)
 		return (NULL);
 	current = list;
-	while (*list_number)
+	while (argc > 0)
 	{
-		mult = 1;
-		copy = list_number;
-		digit = 0;
-		while(*list_number != ' ' && *list_number != '\0')
+		list_number = *argv;
+		while (*list_number)
 		{
-			digit++;
-			list_number++;
+			mult = 1;
+			copy = list_number;
+			digit = 0;
+			while(*list_number != ' ' && *list_number != '\0')
+			{
+				digit++;
+				list_number++;
+			}
+			while (digit > 0)
+			{
+				digit--;
+				if (copy[digit] == '-')
+					current->content = -current->content;
+				else
+					current->content += (copy[digit] - '0') * mult;
+				mult = mult * 10;
+			}
+			if (*list_number != '\0')
+				list_number++;
+			current->next = new_node_linked_list(0);
+			if (current->next == NULL)
+			{
+				delete_linked_list(&list);
+				return (NULL);
+			}
+			current->next->previous = current;
+			current = current->next;
 		}
-		while (digit > 0)
-		{
-			digit--;
-			current->content += (copy[digit] - '0') * mult;
-			mult = mult * 10;
-		}
-		if (*list_number != '\0')
-			list_number++;
-		current->next = new_node_linked_list(0);
-		if (current->next == NULL)
-		{
-			delete_linked_list(&list);
-			return (NULL);
-		}
-		current->next->previous = current;
-		current = current->next;
+		argv++;
+		argc--;
 	}
 	current = current->previous;
 	delete_node_linked_list(current->next);
@@ -97,14 +108,13 @@ void	print_stacks(t_stacks *stacks)
 	dprintf(1, "\e[0m");
 }
 
-int main(void )
+int main(int argc, char **argv)
 {
 	t_stacks	stacks;
-	const char *test = "100 3 0 44 5 8";
 	int	index;
 
-	stacks.stack_a = parser(test);
-	stacks.size_a = 6;
+	stacks.stack_a = parser(argc - 1, argv + 1);
+	stacks.size_a = len_linked_list(stacks.stack_a);
 	stacks.stack_b = NULL;
 	stacks.size_b = 0;
 	dprintf(1, "Original\n");

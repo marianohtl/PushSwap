@@ -9,7 +9,9 @@
 			"type": "cppdbg",
 			"request": "launch",
 			"program": "${workspaceFolder}/push_swap",
-			"args": [],
+			"args": [
+				"${input:numbers}"
+			],
 			"stopAtEntry": false,
 			"cwd": "${workspaceFolder}",
 			"environment": [],
@@ -29,5 +31,13 @@
 			]
 		}
 
+	],
+	"inputs": [
+		{
+			"id": "numbers",
+			"description": "Number list to be sorted.",
+			"type": "promptString",
+			"default": "100 3 0 44 5 8"
+		}
 	]
 }
