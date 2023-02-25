@@ -1,5 +1,6 @@
 #include "linked_list.h"
 #include "stacks.h"
+#include "bubble_sort.h"
 #include <stdio.h>
 
 
@@ -103,7 +104,9 @@ int main(void )
 	int	index;
 
 	stacks.stack_a = parser(test);
+	stacks.size_a = 6;
 	stacks.stack_b = NULL;
+	stacks.size_b = 0;
 	dprintf(1, "Original\n");
 	print_stacks(&stacks);
 	dprintf(1, "\nSwap\n");
@@ -134,5 +137,7 @@ int main(void )
 		print_stacks(&stacks);
 	}
 	dprintf(1, "\n");
+	bubble_sort(&stacks);
+	print_stacks(&stacks);
 	return 0;
 }

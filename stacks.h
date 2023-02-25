@@ -4,6 +4,8 @@
 
 typedef struct s_stacks
 {
+	int	size_a;
+	int	size_b;
 	t_linked_list	*stack_a;
 	t_linked_list	*stack_b;
 }	t_stacks;
