@@ -7,6 +7,7 @@ CFLAGS := -Wall -Wextra -Werror -g3 -MMD
 
 SOURCES := \
 	bubble_sort.c \
+	insertion_sort.c \
 	linked_list.c \
 	operators.c \
 	stacks.c \

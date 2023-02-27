@@ -1,6 +1,7 @@
 #include "linked_list.h"
 #include "stacks.h"
 #include "bubble_sort.h"
+#include "insertion_sort.h"
 #include <stdio.h>
 
 
@@ -111,43 +112,11 @@ void	print_stacks(t_stacks *stacks)
 int main(int argc, char **argv)
 {
 	t_stacks	stacks;
-	int	index;
 
 	stacks.stack_a = parser(argc - 1, argv + 1);
 	stacks.size_a = len_linked_list(stacks.stack_a);
 	stacks.stack_b = NULL;
 	stacks.size_b = 0;
-	dprintf(1, "Original\n");
-	print_stacks(&stacks);
-	dprintf(1, "\nSwap\n");
-	swap_a(&stacks);
-	print_stacks(&stacks);
-	swap_a(&stacks);
-	print_stacks(&stacks);
-	dprintf(1, "\nRotate\n");
-	rotate_a(&stacks);
-	print_stacks(&stacks);
-	dprintf(1, "\nReverse Rotate\n");
-	reverse_rotate_a(&stacks);
-	print_stacks(&stacks);
-
-	dprintf(1, "\nPush\n");
-	index = 0;
-	while (index < 6)
-	{
-		index++;
-		push_a(&stacks);
-		print_stacks(&stacks);
-	}
-	dprintf(1, "\n");
-	while (index > 0)
-	{
-		index--;
-		push_b(&stacks);
-		print_stacks(&stacks);
-	}
-	dprintf(1, "\n");
-	bubble_sort(&stacks);
-	print_stacks(&stacks);
+	insertion_sort(&stacks);
 	return 0;
 }

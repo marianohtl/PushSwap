@@ -1,25 +1,6 @@
 #include "stacks.h"
 #include <unistd.h>
 
-int	is_stack_sorted(t_stacks *stacks)
-{
-	int				index;
-	t_linked_list	*current;
-
-	if (stacks->stack_b != NULL)
-		return (0);
-	index = 0;
-	current = stacks->stack_a;
-	while (index < stacks->size_a - 1)
-	{
-		if (current->content > current->next->content)
-			return (0);
-		current = current->next;
-		index++;
-	}
-	return (1);
-}
-
 void	bubble_sort(t_stacks *stacks)
 {
 	int	is_sorted;

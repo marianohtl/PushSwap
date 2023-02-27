@@ -21,5 +21,6 @@ void	rotate_both(t_stacks *stacks);
 void	reverse_rotate_a(t_stacks *stacks);
 void	reverse_rotate_b(t_stacks *stacks);
 void	reverse_rotate_both(t_stacks *stacks);
+int	is_stack_sorted(t_stacks *stacks);
 
 #endif

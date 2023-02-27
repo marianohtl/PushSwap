@@ -38,6 +38,7 @@ void push(t_linked_list **list_a, t_linked_list **list_b)
 	to_move->next = *list_b;
 	to_move->previous = (*list_b)->previous;
 	(*list_b)->previous->next = to_move;
+	(*list_b)->previous = to_move;
 	*list_b = to_move;
 }
 
