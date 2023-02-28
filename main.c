@@ -47,6 +47,11 @@ t_linked_list *parser(int argc, char **argv)
 			digit = 0;
 			while(*list_number != ' ' && *list_number != '\0')
 			{
+				if (*list_number != '-' && (*list_number < '0' || *list_number > '9'))
+				{
+					delete_linked_list(&list);
+					return (NULL);
+				}
 				digit++;
 				list_number++;
 			}
@@ -114,6 +119,11 @@ int main(int argc, char **argv)
 	t_stacks	stacks;
 
 	stacks.stack_a = parser(argc - 1, argv + 1);
+	if (stacks.stack_a == NULL)
+	{
+		write(STDERR_FILENO, "Error\n", 6);
+		return (1);
+	}
 	stacks.size_a = len_linked_list(stacks.stack_a);
 	stacks.stack_b = NULL;
 	stacks.size_b = 0;

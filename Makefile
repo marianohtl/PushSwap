@@ -20,10 +20,11 @@ all: $(NAME)
 $(NAME): $(OBJECTS)
 	$(CC) $(CFLAGS) $^ -o $@
 
+$(OBJECTS): | $(OBJECTS_FOLDER)
 $(OBJECTS_FOLDER):
 	mkdir -p $@
 
-$(OBJECTS_FOLDER)/%.o: %.c $(OBJECTS_FOLDER) Makefile
+$(OBJECTS_FOLDER)/%.o: %.c Makefile
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
