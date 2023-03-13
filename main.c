@@ -1,38 +1,21 @@
+#include "push_swap.h"
 #include "linked_list.h"
 #include "stacks.h"
 #include "bubble_sort.h"
-#include "insertion_sort.h"
+#include "merge_sort.h"
+#include "short_stack_sorter.h"
 #include <stdio.h>
+#include <unistd.h>
 
-
-int len_linked_list(t_linked_list *lst)
-{
-	t_linked_list *first;
-	first = lst;
-
-	int index;
-	// int current;
-
-	index = 1;
-	
-	lst = lst->next;
-	while(lst != first)
-	{
-		index++;
-		lst = lst->next;
-	}
-	return (index);
-}
-
-t_linked_list *parser(int argc, char **argv)
+t_linked_list	*parser(int argc, char **argv)
 {
 	t_linked_list	*list;
 	t_linked_list	*current;
-	const char *copy;
-	const char *list_number;
-	int digit;
-	int mult;
-	
+	const char		*copy;
+	const char		*list_number;
+	int				digit;
+	int				mult;
+
 	list = new_node_linked_list(0);
 	if (list == NULL)
 		return (NULL);
@@ -45,7 +28,7 @@ t_linked_list *parser(int argc, char **argv)
 			mult = 1;
 			copy = list_number;
 			digit = 0;
-			while(*list_number != ' ' && *list_number != '\0')
+			while (*list_number != ' ' && *list_number != '\0')
 			{
 				if (*list_number != '-' && (*list_number < '0' || *list_number > '9'))
 				{
@@ -61,7 +44,14 @@ t_linked_list *parser(int argc, char **argv)
 				if (copy[digit] == '-')
 					current->content = -current->content;
 				else
+				{
 					current->content += (copy[digit] - '0') * mult;
+					if (current->content < 0)
+					{
+						delete_linked_list(&list);
+						return (NULL);
+					}
+				}
 				mult = mult * 10;
 			}
 			if (*list_number != '\0')
@@ -85,48 +75,131 @@ t_linked_list *parser(int argc, char **argv)
 	return (list);
 }
 
-void	print_list(t_linked_list *list)
+void	replace_with_position(t_stacks *stacks, t_stacks *ordered)
 {
-	t_linked_list *current;
+	int				ordered_index;
+	int				stacks_index;
+	t_linked_list	*current_stack;
+	t_linked_list	*current_ordered;
 
-	if (list == NULL)
+	stacks_index = 0;
+	ordered_index = 0;
+	current_stack = stacks->stack_a;
+	current_ordered = ordered->stack_a;
+	while (stacks_index < stacks->size_a)
 	{
-		dprintf(1, "%p\n", list);
-		return ;
+		while (current_ordered->content != current_stack->content)
+		{
+			current_ordered = current_ordered->next;
+			ordered_index = (ordered_index + 1) % stacks->size_a;
+		}
+		current_stack->content = ordered_index;
+		current_stack = current_stack->next;
+		stacks_index++;
 	}
-	current = list;
-	dprintf(1, "%d ", current->content);
-	current = current->next;
-	while (current != list && current != NULL)
-	{
-		dprintf(1, "%d ", current->content);
-		current = current->next;
-	}
-	dprintf(1, "\n");
 }
 
-void	print_stacks(t_stacks *stacks)
+void	copy_stack(t_linked_list *destination, t_linked_list *source, int size)
 {
-	dprintf(1, "\e[33mA: ");
-	print_list(stacks->stack_a);
-	dprintf(1, "\e[32mB: ");
-	print_list(stacks->stack_b);
-	dprintf(1, "\e[0m");
+	int	index;
+
+	index = 0;
+	while (index < size)
+	{
+		destination->content = source->content;
+		destination = destination->next;
+		source = source->next;
+		index++;
+	}
 }
 
-int main(int argc, char **argv)
+void	brute_force_sort(t_stacks *original, t_stacks *copy)
 {
-	t_stacks	stacks;
+	int				min_steps;
+	int				steps;
+	t_parameters	min_params;
+	t_parameters	params;
 
-	stacks.stack_a = parser(argc - 1, argv + 1);
-	if (stacks.stack_a == NULL)
+	params.offset = -original->size_a / 4 - 1;
+	if (params.offset < -26)
+		params.offset = -26;
+	min_steps = __INT_MAX__;
+	min_params = (t_parameters){};
+	while (params.offset++ <= 25)
 	{
-		write(STDERR_FILENO, "Error\n", 6);
-		return (1);
+		params.rate = 34;
+		while (params.rate++ <= 50)
+		{
+			steps = natural_merge_sort(copy, params.offset, params.rate, 0);
+			copy_stack(copy->stack_a, original->stack_a, original->size_a);
+			if (min_steps > steps)
+			{
+				min_steps = steps;
+				min_params = params;
+			}
+		}
 	}
-	stacks.size_a = len_linked_list(stacks.stack_a);
-	stacks.stack_b = NULL;
-	stacks.size_b = 0;
-	insertion_sort(&stacks);
-	return 0;
+	natural_merge_sort(original, min_params.offset, min_params.rate, 1);
+}
+
+void	free_resources(t_stacks *original, t_stacks *copy)
+{
+	if (original != NULL)
+		delete_linked_list(&(original->stack_a));
+	if (copy != NULL)
+		delete_linked_list(&(copy->stack_a));
+}
+
+int	end_program(t_stacks *original, t_stacks *copy, int exit_code)
+{
+	free_resources(original, copy);
+	return (exit_code);
+}
+
+int	raise_error(t_stacks *original, t_stacks *copy)
+{
+	write(STDERR_FILENO, "Error\n", 6);
+	return (end_program(original, copy, 1));
+}
+
+int	check_duplicates(t_stacks *stacks)
+{
+	int	index;
+
+	if (stacks->size_a == 1)
+		return (0);
+	index = 0;
+	while (index++ < stacks->size_a)
+		if (stacks->stack_a->content == stacks->stack_a->next->content)
+			return (1);
+	return (0);
+}
+
+int	main(int argc, char **argv)
+{
+	t_stacks	original;
+	t_stacks	copy;
+
+	if (argc == 1)
+		return (end_program(NULL, NULL, 0));
+	original = (t_stacks){};
+	copy = (t_stacks){};
+	original.stack_a = parser(argc - 1, argv + 1);
+	copy.stack_a = parser(argc - 1, argv + 1);
+	if (original.stack_a == NULL || copy.stack_a == NULL)
+		return (raise_error(&original, &copy));
+	original.size_a = len_linked_list(original.stack_a);
+	copy.size_a = original.size_a;
+	bubble_sort(&copy, 0);
+	if (check_duplicates(&copy))
+		return (raise_error(&original, &copy));
+	if (is_stack_sorted(&original))
+		return (end_program(&original, &copy, 0));
+	replace_with_position(&original, &copy);
+	copy_stack(copy.stack_a, original.stack_a, original.size_a);
+	if (original.size_a <= 5)
+		sort_short_stack(&copy, original.size_a, 1);
+	else
+		brute_force_sort(&original, &copy);
+	return (end_program(&original, &copy, 0));
 }

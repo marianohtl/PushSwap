@@ -1,17 +1,16 @@
-# include "linked_list.h"
-# include <unistd.h>
+#include "linked_list.h"
+#include <unistd.h>
 
-void swap(t_linked_list *lst)
+void	swap(t_linked_list *lst)
 {
-	int current;
+	int	current;
 
 	current = lst->content;
-
 	lst->content = lst->next->content;
 	lst->next->content = current;
 }
 
-void push(t_linked_list **list_a, t_linked_list **list_b)
+void	push(t_linked_list **list_a, t_linked_list **list_b)
 {
 	t_linked_list	*to_move;
 	t_linked_list	*top;
@@ -42,12 +41,12 @@ void push(t_linked_list **list_a, t_linked_list **list_b)
 	*list_b = to_move;
 }
 
-void rotate(t_linked_list **lst)
+void	rotate(t_linked_list **lst)
 {
 	*lst = (*lst)->next;
 }
 
-void reverse_rotate(t_linked_list **lst)
+void	reverse_rotate(t_linked_list **lst)
 {
 	*lst = (*lst)->previous;
 }

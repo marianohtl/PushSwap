@@ -14,6 +14,22 @@ t_linked_list	*new_node_linked_list(int content)
 	return (node);
 }
 
+int	len_linked_list(t_linked_list *lst)
+{
+	int				index;
+	t_linked_list	*first;
+
+	first = lst;
+	index = 1;
+	lst = lst->next;
+	while (lst != first)
+	{
+		index++;
+		lst = lst->next;
+	}
+	return (index);
+}
+
 void	delete_node_linked_list(t_linked_list *node)
 {
 	free(node);
@@ -52,7 +68,7 @@ t_linked_list	*new_linked_list(int *values, int elements)
 	t_linked_list	*linked_list;
 	t_linked_list	*current;
 	t_linked_list	*node;
-	int	index;
+	int				index;
 
 	if (elements < 1)
 		return (NULL);

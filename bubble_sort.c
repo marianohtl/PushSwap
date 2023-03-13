@@ -1,7 +1,7 @@
 #include "stacks.h"
 #include <unistd.h>
 
-void	bubble_sort(t_stacks *stacks)
+void	bubble_sort(t_stacks *stacks, int verbose)
 {
 	int	is_sorted;
 	int	index;
@@ -13,8 +13,8 @@ void	bubble_sort(t_stacks *stacks)
 		while (index < stacks->size_a)
 		{
 			if (index < stacks->size_a - 1 && stacks->stack_a->content >= stacks->stack_a->next->content)
-				swap_a(stacks);
-			rotate_a(stacks);
+				swap_a(stacks, verbose);
+			rotate_a(stacks, verbose);
 			index++;
 		}
 		is_sorted = is_stack_sorted(stacks);

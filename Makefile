@@ -7,9 +7,10 @@ CFLAGS := -Wall -Wextra -Werror -g3 -MMD
 
 SOURCES := \
 	bubble_sort.c \
-	insertion_sort.c \
 	linked_list.c \
+	merge_sort.c \
 	operators.c \
+	short_stack_sorter.c \
 	stacks.c \
 	main.c
 OBJECTS_FOLDER := objs
@@ -25,6 +26,7 @@ $(OBJECTS_FOLDER):
 	mkdir -p $@
 
 $(OBJECTS_FOLDER)/%.o: %.c Makefile
+	mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
