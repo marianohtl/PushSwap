@@ -3,15 +3,21 @@ MAKEFLAGS += --no-builtin-rules
 NAME := push_swap
 
 CC := clang
-CFLAGS := -Wall -Wextra -Werror -g3 -MMD
+CFLAGS := -Wall -Wextra -Werror -g3 -MMD -I ./
 
 SOURCES := \
 	bubble_sort.c \
+	helper.c \
 	linked_list.c \
 	merge_sort.c \
 	operators.c \
+	parser.c \
 	short_stack_sorter.c \
-	stacks.c \
+	stacks/push.c \
+	stacks/reverse_rotate.c \
+	stacks/rotate.c \
+	stacks/swap.c \
+	stacks/utils.c \
 	main.c
 OBJECTS_FOLDER := objs
 OBJECTS := $(SOURCES:%.c=objs/%.o)

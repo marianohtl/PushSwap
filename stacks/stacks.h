@@ -22,5 +22,8 @@ void	reverse_rotate_a(t_stacks *stacks, int verbose);
 void	reverse_rotate_b(t_stacks *stacks, int verbose);
 void	reverse_rotate_both(t_stacks *stacks, int verbose);
 int		is_stack_sorted(t_stacks *stacks);
+int		insert_top_b_into_a(t_stacks *stacks, int verbose);
+int		move_stack_a_to_zero(t_stacks *stacks, int verbose);
+void	replace_with_position(t_stacks *stacks, t_stacks *ordered);
 
 #endif

@@ -1,117 +1,13 @@
 #include "push_swap.h"
 #include "linked_list.h"
-#include "stacks.h"
+#include "stacks/stacks.h"
+#include "helper.h"
 #include "bubble_sort.h"
 #include "merge_sort.h"
 #include "short_stack_sorter.h"
+#include "parser.h"
 #include <stdio.h>
 #include <unistd.h>
-
-t_linked_list	*parser(int argc, char **argv)
-{
-	t_linked_list	*list;
-	t_linked_list	*current;
-	const char		*copy;
-	const char		*list_number;
-	int				digit;
-	int				mult;
-
-	list = new_node_linked_list(0);
-	if (list == NULL)
-		return (NULL);
-	current = list;
-	while (argc > 0)
-	{
-		list_number = *argv;
-		while (*list_number)
-		{
-			mult = 1;
-			copy = list_number;
-			digit = 0;
-			while (*list_number != ' ' && *list_number != '\0')
-			{
-				if (*list_number != '-' && (*list_number < '0' || *list_number > '9'))
-				{
-					delete_linked_list(&list);
-					return (NULL);
-				}
-				digit++;
-				list_number++;
-			}
-			while (digit > 0)
-			{
-				digit--;
-				if (copy[digit] == '-')
-					current->content = -current->content;
-				else
-				{
-					current->content += (copy[digit] - '0') * mult;
-					if (current->content < 0)
-					{
-						delete_linked_list(&list);
-						return (NULL);
-					}
-				}
-				mult = mult * 10;
-			}
-			if (*list_number != '\0')
-				list_number++;
-			current->next = new_node_linked_list(0);
-			if (current->next == NULL)
-			{
-				delete_linked_list(&list);
-				return (NULL);
-			}
-			current->next->previous = current;
-			current = current->next;
-		}
-		argv++;
-		argc--;
-	}
-	current = current->previous;
-	delete_node_linked_list(current->next);
-	current->next = list;
-	list->previous = current;
-	return (list);
-}
-
-void	replace_with_position(t_stacks *stacks, t_stacks *ordered)
-{
-	int				ordered_index;
-	int				stacks_index;
-	t_linked_list	*current_stack;
-	t_linked_list	*current_ordered;
-
-	stacks_index = 0;
-	ordered_index = 0;
-	current_stack = stacks->stack_a;
-	current_ordered = ordered->stack_a;
-	while (stacks_index < stacks->size_a)
-	{
-		while (current_ordered->content != current_stack->content)
-		{
-			current_ordered = current_ordered->next;
-			ordered_index = (ordered_index + 1) % stacks->size_a;
-		}
-		current_stack->content = ordered_index;
-		current_stack = current_stack->next;
-		stacks_index++;
-	}
-}
-
-void	copy_stack(t_linked_list *destination, t_linked_list *source, int size)
-{
-	int	index;
-
-	index = 0;
-	while (index < size)
-	{
-		destination->content = source->content;
-		destination = destination->next;
-		source = source->next;
-		index++;
-	}
-}
 
 void	brute_force_sort(t_stacks *original, t_stacks *copy)
 {
@@ -160,19 +56,6 @@ int	raise_error(t_stacks *original, t_stacks *copy)
 {
 	write(STDERR_FILENO, "Error\n", 6);
 	return (end_program(original, copy, 1));
-}
-
-int	check_duplicates(t_stacks *stacks)
-{
-	int	index;
-
-	if (stacks->size_a == 1)
-		return (0);
-	index = 0;
-	while (index++ < stacks->size_a)
-		if (stacks->stack_a->content == stacks->stack_a->next->content)
-			return (1);
-	return (0);
 }
 
 int	main(int argc, char **argv)

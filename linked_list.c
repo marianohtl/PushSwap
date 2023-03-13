@@ -62,33 +62,3 @@ int	append_linked_list(t_linked_list *node, t_linked_list *next)
 	node->next = next;
 	return (0);
 }
-
-t_linked_list	*new_linked_list(int *values, int elements)
-{
-	t_linked_list	*linked_list;
-	t_linked_list	*current;
-	t_linked_list	*node;
-	int				index;
-
-	if (elements < 1)
-		return (NULL);
-	linked_list = new_node_linked_list(values[0]);
-	if (linked_list == NULL)
-		return (NULL);
-	index = 1;
-	current = linked_list;
-	while (index < elements)
-	{
-		node = new_node_linked_list(values[index]);
-		if (node == NULL)
-		{
-			delete_linked_list(&linked_list);
-			return (NULL);
-		}
-		append_linked_list(current, node);
-		current = node;
-		index++;
-	}
-	append_linked_list(current, linked_list);
-	return (linked_list);
-}

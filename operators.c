@@ -10,6 +10,13 @@ void	swap(t_linked_list *lst)
 	lst->next->content = current;
 }
 
+static void	insert_node(t_linked_list **lst, t_linked_list *node)
+{
+	(*lst)->previous->next = node;
+	(*lst)->previous = node;
+	*lst = node;
+}
+
 void	push(t_linked_list **list_a, t_linked_list **list_b)
 {
 	t_linked_list	*to_move;
@@ -36,9 +43,7 @@ void	push(t_linked_list **list_a, t_linked_list **list_b)
 	}
 	to_move->next = *list_b;
 	to_move->previous = (*list_b)->previous;
-	(*list_b)->previous->next = to_move;
-	(*list_b)->previous = to_move;
-	*list_b = to_move;
+	insert_node(list_b, to_move);
 }
 
 void	rotate(t_linked_list **lst)
