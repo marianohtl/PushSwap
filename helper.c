@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   helper.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tmariano <tmariano@student.42sp.org.br>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/04/03 00:55:03 by tmariano          #+#    #+#             */
+/*   Updated: 2023/04/03 00:56:19 by tmariano         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "stacks/stacks.h"
 #include <unistd.h>
 
@@ -57,14 +69,19 @@ int	is_single_group(t_linked_list *node)
 
 int	check_duplicates(t_stacks *stacks)
 {
-	int	index;
+	int				index;
+	t_linked_list	*current;
 
 	if (stacks->size_a == 1)
 		return (0);
 	index = 0;
+	current = stacks->stack_a;
 	while (index++ < stacks->size_a)
-		if (stacks->stack_a->content == stacks->stack_a->next->content)
+	{
+		if (current->content == current->next->content)
 			return (1);
+		current = current->next;
+	}
 	return (0);
 }
 

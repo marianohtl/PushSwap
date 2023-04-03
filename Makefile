@@ -3,7 +3,7 @@ MAKEFLAGS += --no-builtin-rules
 NAME := push_swap
 
 CC := clang
-CFLAGS := -Wall -Wextra -Werror -g3 -MMD -I ./
+CFLAGS := -Wall -Wextra -Werror -O2 -MMD -I ./
 
 SOURCES := \
 	bubble_sort.c \

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tmariano <tmariano@student.42sp.org.br>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/04/03 00:53:05 by tmariano          #+#    #+#             */
+/*   Updated: 2023/04/03 00:53:09 by tmariano         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "push_swap.h"
 #include "linked_list.h"
 #include "stacks/stacks.h"
@@ -6,7 +18,6 @@
 #include "merge_sort.h"
 #include "short_stack_sorter.h"
 #include "parser.h"
-#include <stdio.h>
 #include <unistd.h>
 
 void	brute_force_sort(t_stacks *original, t_stacks *copy)
@@ -23,8 +34,8 @@ void	brute_force_sort(t_stacks *original, t_stacks *copy)
 	min_params = (t_parameters){};
 	while (params.offset++ <= 25)
 	{
-		params.rate = 34;
-		while (params.rate++ <= 50)
+		params.rate = 0;
+		while (params.rate++ < 99)
 		{
 			steps = natural_merge_sort(copy, params.offset, params.rate, 0);
 			copy_stack(copy->stack_a, original->stack_a, original->size_a);
